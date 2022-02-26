@@ -1,10 +1,10 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center mt-5">
+        <div class="row justify-content-center mt-3">
             <div class="col-md-12">
                 <div class="card mt">
                     <div class="card-header">
-                        <h3 class="card-title">Data Sales</h3>
+                        <h3 class="card-title">Data Customer</h3>
                         <div class="card-tools">
                             <button
                                 type="button"
@@ -22,30 +22,30 @@
                             <div class="table-responsive">
                                 <table class="table">
                                     <tr>
-                                        <th>Code Transaksi</th>
-                                        <th>Tanggal Transaksi</th>
-                                        <th>Nama Costumer</th>
-                                        <th>Nama Item</th>
-                                        <th>Qty</th>
-                                        <th>Total Diskon</th>
-                                        <th>Total Bayar</th>
+                                        <th>Nama</th>
+                                        <th>Contact</th>
+                                        <th>Email</th>
+                                        <th>Alamat</th>
+                                        <th>Diskon</th>
+                                        <th>Tipe Diskon</th>
+                                        <th>KTP</th>
                                         <th>Aksi</th>
                                     </tr>
                                     <tr
-                                        v-for="sale in sales"
-                                        :key="sale.code_transaksi"
+                                        v-for="costumer in costumers"
+                                        :key="costumer.id"
                                     >
-                                        <td>{{ sale.code_transaksi }}</td>
-                                        <td>{{ sale.tanggal_transaksi }}</td>
+                                        <td>{{ costumer.nama }}</td>
+                                        <td>{{ costumer.contact }}</td>
+                                        <td>{{ costumer.email }}</td>
+                                        <td>{{ costumer.alamat }}</td>
+                                        <td>{{ costumer.diskon }}</td>
+                                        <td>{{ costumer.tipe_diskon }}</td>
                                         <td></td>
-                                        <td></td>
-                                        <td>{{ sale.qty }}</td>
-                                        <td>{{ sale.total_diskon }}</td>
-                                        <td>{{ sale.total_bayar }}</td>
                                         <td>
                                             <a
                                                 href="#"
-                                                @click="showModalEdit(sale)"
+                                                @click="showModalEdit(costumer)"
                                                 ><i
                                                     class="fa-solid fa-pen-to-square"
                                                 ></i
@@ -53,7 +53,7 @@
                                             |
                                             <a
                                                 href="#"
-                                                @click="deleteData(sale.id)"
+                                                @click="deleteData(costumer.id)"
                                                 ><i
                                                     class="fa-solid fa-trash"
                                                 ></i
@@ -72,7 +72,7 @@
             class="modal fade"
             id="modalTambah"
             tabindex="-1"
-            aria-labelledby="modalTambah1"
+            aria-labelledby="exampleModalLabel"
             aria-hidden="true"
         >
             <div class="modal-dialog">
@@ -83,14 +83,14 @@
                             id="modalTambah1"
                             v-show="!statusmodal"
                         >
-                            Tambah Sales
+                            Tambah Costumer
                         </h5>
                         <h5
                             class="modal-title"
                             id="modalTambah1"
                             v-show="statusmodal"
                         >
-                            Ubah Sales
+                            Ubah Costumer
                         </h5>
                         <button
                             type="button"
@@ -106,112 +106,113 @@
                     >
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="">Tanggal Transaksi</label>
+                                <label for="">Nama</label>
                                 <input
-                                    type="date"
-                                    v-model="form.tanggal_transaksi"
+                                    type="text"
+                                    v-model="form.nama"
                                     class="form-control"
                                     :class="{
-                                        'is-invalid':
-                                            form.errors.has(
-                                                'tanggal_transaksi'
-                                            ),
+                                        'is-invalid': form.errors.has('nama'),
                                     }"
                                 />
                                 <has-error
                                     :form="form"
-                                    field="tanggal_transaksi"
+                                    field="nama"
                                 ></has-error>
                             </div>
                             <div class="form-group">
-                                <label for="">Costumer</label>
-                                <select
-                                    v-model="form.costumer_id"
+                                <label for="">Contact</label>
+                                <input
+                                    type="text"
+                                    v-model="form.contact"
                                     class="form-control"
                                     :class="{
                                         'is-invalid':
-                                            form.errors.has('costumer_id'),
+                                            form.errors.has('contact'),
+                                    }"
+                                />
+                                <has-error
+                                    :form="form"
+                                    field="contact"
+                                ></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Email</label>
+                                <input
+                                    type="email"
+                                    v-model="form.email"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': form.errors.has('email'),
+                                    }"
+                                />
+                                <has-error
+                                    :form="form"
+                                    field="email"
+                                ></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Alamat</label>
+                                <textarea
+                                    v-model="form.alamat"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': form.errors.has('alamat'),
+                                    }"
+                                />
+                                <has-error
+                                    :form="form"
+                                    field="alamat"
+                                ></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Diskon</label>
+                                <input
+                                    type="number"
+                                    v-model="form.diskon"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': form.errors.has('diskon'),
+                                    }"
+                                />
+                                <has-error
+                                    :form="form"
+                                    field="diskon"
+                                ></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Tipe Diskon</label>
+                                <select
+                                    name="tipe_diskon"
+                                    v-model="form.tipe_diskon"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid':
+                                            form.errors.has('tipe_diskon'),
                                     }"
                                 >
-                                    <option
-                                        v-for="costumer in costumers"
-                                        :key="costumer.id"
-                                        :value="costumer.id"
-                                    >
-                                        {{ costumer.nama }}
+                                    <option value>Pilih Tipe Diskon</option>
+                                    <option value="Presentase">
+                                        Presentase
+                                    </option>
+                                    <option value="Fix-diskon">
+                                        Fix Diskon
                                     </option>
                                 </select>
                                 <has-error
                                     :form="form"
-                                    field="costumer_id"
+                                    field="tipe_diskon"
                                 ></has-error>
                             </div>
-                            <div class="form-group">
-                                <label for="">Item</label>
-                                <select
-                                    v-model="form.item_id"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid':
-                                            form.errors.has('item_id'),
-                                    }"
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label"
+                                    >Ktp</label
                                 >
-                                    <option
-                                        v-for="item in items"
-                                        :key="item.id"
-                                        :value="item.id"
-                                    >
-                                        {{ item.nama_item }}
-                                    </option>
-                                </select>
-                                <has-error
-                                    :form="form"
-                                    field="item_id"
-                                ></has-error>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Qty</label>
                                 <input
-                                    type="number"
-                                    v-model="form.qty"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid': form.errors.has('qty'),
-                                    }"
+                                    class="form-control form-control"
+                                    id="formFile"
+                                    type="file"
                                 />
-                                <has-error :form="form" field="qty"></has-error>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Total Diskon</label>
-                                <input
-                                    type="number"
-                                    v-model="form.total_diskon"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid':
-                                            form.errors.has('total_diskon'),
-                                    }"
-                                />
-                                <has-error
-                                    :form="form"
-                                    field="total_diskon"
-                                ></has-error>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Total Bayar</label>
-                                <input
-                                    type="number"
-                                    v-model="form.total_bayar"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid':
-                                            form.errors.has('total_bayar'),
-                                    }"
-                                />
-                                <has-error
-                                    :form="form"
-                                    field="total_bayar"
-                                ></has-error>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -261,18 +262,16 @@ export default {
         return {
             loading: false,
             disabled: false,
-            sales: {},
-            items: {},
-            costumers: {},
             statusmodal: false,
+            costumers: {},
             form: new Form({
-                code_transaksi: "",
-                tanggal_transaksi: "",
-                costumer_id: "",
-                item_id: "",
-                qty: "",
-                total_diskon: "",
-                total_bayar: "",
+                id: "",
+                nama: "",
+                alamat: "",
+                contact: "",
+                email: "",
+                diskon: "",
+                tipe_diskon: "",
             }),
         };
     },
@@ -282,38 +281,42 @@ export default {
             this.form.reset();
             $("#modalTambah").modal("show");
         },
-        showModalEdit(sale) {
+        showModalEdit(costumer) {
             this.statusmodal = true;
             this.form.reset();
             $("#modalTambah").modal("show");
-            this.form.fill(sale);
+            this.form.fill(costumer);
         },
         loadData() {
             this.$Progress.start();
-            axios.get("api/sale").then(({ data }) => (this.sales = data));
+            axios
+                .get("/api/costumer")
+                .then(({ data }) => (this.costumers = data));
             this.$Progress.finish();
         },
-        loadDataCostumer() {
-            axios
-                .get("api/costumer")
-                .then(({ data }) => (this.costumers = data));
-        },
-        loadDataItem() {
-            axios.get("api/item").then(({ data }) => (this.items = data));
-        },
         simpanData() {
+            this.form.post("/api/costumer").then(() => {
+                Fire.$emit("refreshData");
+                $("#modalTambah").modal("hide");
+                Toast.fire({
+                    icon: "success",
+                    title: "Data Berasil tersimpan",
+                });
+            });
+        },
+        ubahData() {
             this.$Progress.start();
             this.loading = true;
             this.disabled = true;
             this.form
-                .post("/api/sale")
+                .put("/api/costumer/" + this.form.id)
                 .then(() => {
                     Fire.$emit("refreshData");
                     // this.resetForm();
                     $("#modalTambah").modal("hide");
                     Toast.fire({
                         icon: "success",
-                        title: "Data Berasil tersimpan",
+                        title: "Data Berasil terupdate",
                     });
                     this.$Progress.finish();
                     this.loading = false;
@@ -325,31 +328,10 @@ export default {
                     this.disabled = false;
                 });
         },
-        ubahData() {
-            this.loading = true;
-            this.disabled = true;
-            this.form
-                .put("/api/sale/" + this.form.code_transaksi)
-                .then(() => {
-                    Fire.$emit("refreshData");
-                    // this.resetForm();
-                    $("#modalTambah").modal("hide");
-                    Toast.fire({
-                        icon: "success",
-                        title: "Data Berasil terupdate",
-                    });
-                    this.loading = false;
-                    this.disabled = false;
-                })
-                .catch(() => {
-                    this.loading = false;
-                    this.disabled = false;
-                });
-        },
         // resetForm() {
         //     this.form.reset();
         // },
-        deleteData(code_transaksi) {
+        deleteData(id) {
             Swal.fire({
                 title: "Anda yakin ingin menghapus data ini ?",
                 text: "Klik batal untuk membatalkan",
@@ -361,7 +343,7 @@ export default {
             }).then((result) => {
                 if (result.value) {
                     this.form
-                        .delete("api/sale/" + code_transaksi)
+                        .delete("api/costumer/" + id)
                         .then(() => {
                             Swal.fire(
                                 "Terhapus!",
@@ -382,8 +364,6 @@ export default {
         },
     },
     created() {
-        this.loadDataCostumer();
-        this.loadDataItem();
         this.loadData();
         Fire.$on("refreshData", () => {
             this.loadData();
